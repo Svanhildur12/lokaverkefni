@@ -64,7 +64,7 @@ class _HangmanScreenState extends State<HangmanScreen> {
   String displayWord() {
     String display = '';
     for (int i = 0; i < secretWord.length; i++) {
-      display += guessedLetters[i] ? secretWord[i] : '_';
+      display += guessedLetters[i] ? secretWord[i].toUpperCase() : '_';
       display += ' ';
     }
     return display.trim();
