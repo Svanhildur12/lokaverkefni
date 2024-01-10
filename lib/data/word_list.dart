@@ -1,7 +1,5 @@
-
 List<String> wordList = [
-
-'Apple',
+  'Apple',
   'Banana',
   'Carrot',
   'Dog',
@@ -21,6 +19,16 @@ List<String> wordList = [
   'Rainbow',
   'Sunflower',
   'Turtle',
-
-
+  'Cat',
+  'Human',
+  'Car',
+  'Lamp',
+  'Mountain',
+  'Telescope',
+  'Symphony',
+  'Paradox',
+  'Galaxy',
+  'Aquamarine',
+  'Labyrinth',
+  'Harmony',
 ];

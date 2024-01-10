@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hangman_app/hangman_words.dart';
-import 'package:hangman_app/start_screen.dart';
+import 'package:hangman_app/screens/start_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Hangman extends StatefulWidget {

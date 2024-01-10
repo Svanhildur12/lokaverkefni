@@ -1,75 +1,77 @@
 import 'package:flutter/material.dart';
-import 'package:hangman_app/hangman_screen.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:hangman_app/start_screen.dart';
-
+import 'package:hangman_app/data/game_rules_screen.dart';
+import 'package:hangman_app/hangman_ui.dart';
+import 'package:hangman_app/models/hangman_game_state.dart';
+import 'package:hangman_app/screens/hangman_screen.dart';
+import 'package:hangman_app/screens/start_screen.dart';
 
 class Hangman extends StatefulWidget {
   const Hangman({super.key});
+
   @override
   State<Hangman> createState() {
     return _HangmanState();
   }
 }
 
-  class _HangmanState extends State<Hangman> {
+class _HangmanState extends State<Hangman> {
+  late HangmanGameState gameState;
   Widget? activeScreen;
 
   @override
   void initState() {
-    activeScreen = StartScreen(switchScreen);
+    gameState = HangmanGameState();
+    activeScreen = StartScreen(
+        onGameRulesPressed: switchToGameRules,
+        onStartGamePressed: switchToHangmanScreen,
+        gameState: gameState);
     super.initState();
+  }
+
+  void switchToHangmanScreen() {
+    setState(() {
+      activeScreen = HangmanScreen(
+        onStartGamePressed: switchToHangmanScreen,
+        gameState: gameState,
+        onResultPressed: switchToResultsScreen,
+      );
+    });
+  }
+
+  void switchToResultsScreen() {
+    setState(() {
+      activeScreen = HangmanScreen(
+          onStartGamePressed: switchToHangmanScreen,
+          onResultPressed: switchToResultsScreen,
+          gameState: gameState);
+    });
   }
 
   void switchScreen() {
     setState(() {
-      activeScreen =const HangmanScreen();
+      activeScreen = StartScreen(
+          onGameRulesPressed: switchToGameRules,
+          onStartGamePressed: switchToHangmanScreen,
+          gameState: gameState);
+    });
+  }
+
+  void switchToGameRules() {
+    setState(() {
+      activeScreen = GameRulesScreen(
+        onBack: switchScreen,
+        onGameRulesPressed: switchToGameRules,
+        gameState: gameState,
+        onStartGamePressed: switchToHangmanScreen,
+      );
     });
   }
 
   @override
-  Widget build(context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          flexibleSpace: Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [
-                    Colors.red,
-                    Colors.black,
-                  ],
-                  begin: Alignment.center,
-                  end: Alignment.centerLeft,
-                  tileMode: TileMode.mirror),
-            ),
-          ),
-          title: Text(
-            'THE HANGMAN APP!',
-            style: GoogleFonts.syne(
-              color: Colors.black,
-              fontSize: 26,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          centerTitle: true,
-        ),
-        body: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-                colors: [
-                  Colors.red,
-                  Colors.black,
-                ],
-                begin: Alignment.center,
-                end: Alignment.centerLeft,
-                tileMode: TileMode.mirror
-            ),
-          ),
-          child: activeScreen,
-        ),
-      ),
-    );
+  Widget build(BuildContext context) {
+    return HangmanUI(
+        activeScreen: activeScreen,
+        onGameRulesPressed: switchToGameRules,
+        gameState: gameState);
   }
-  }
+}
